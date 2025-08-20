@@ -1,0 +1,9 @@
+stages:
+  train_model:
+    cmd: python -m src.train
+    deps:
+    - data/training.1600000.processed.noemoticon.csv
+    - src/preprocess.py
+    - src/train.py
+    outs:
+    - models/model.joblib

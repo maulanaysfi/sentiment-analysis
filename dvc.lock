@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  train_model:
+    cmd: python -m src.train
+    deps:
+    - path: data/training.1600000.processed.noemoticon.csv
+      hash: md5
+      md5: df952449d6f9b5f9fdfe3fc53ddef7ca
+      size: 238803811
+    - path: src/preprocess.py
+      hash: md5
+      md5: 0975283bf811a59bed8739f0751b5d97
+      size: 813
+    - path: src/train.py
+      hash: md5
+      md5: b25bcc0a5b6bde29d5346d8b97d7e910
+      size: 1807
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: bd35d5ce8b9a0a5e5596b09469c1c70b
+      size: 29916596

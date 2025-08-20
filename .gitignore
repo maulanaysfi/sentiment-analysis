@@ -2,7 +2,6 @@ venv/
 .gcp/
 mlruns/
 mlartifacts/
-models/
+models/*.joblib
 src/__pycache__/
 *.csv
-/models
