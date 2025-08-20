@@ -1,0 +1,12 @@
+pandas
+scikit-learn
+nltk
+emoji
+joblib
+mlflow
+dvc-ssh
+dvc-gs
+fastapi
+uvicorn
+evidently
+matplotlib
