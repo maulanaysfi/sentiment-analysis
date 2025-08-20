@@ -5,3 +5,4 @@ mlartifacts/
 models/
 src/__pycache__/
 *.csv
+/models
