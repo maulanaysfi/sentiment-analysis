@@ -1,0 +1,4 @@
+[core]
+    remote = gcp-bucket-1
+['remote "gcp-bucket-1"']
+    url = gs://maulanaysfi-bucket-1/dvc-repos/sentiment-analysis
