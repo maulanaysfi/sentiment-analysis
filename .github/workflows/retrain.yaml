@@ -1,0 +1,52 @@
+name: sentiment-analysis
+on: 
+  [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: ghcr.io/iterative/cml:latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependencies
+        run:
+          pip install -r requirements.txt
+
+      - name: Setup GCP Credentials
+        env:
+          GCP_KEY_JSON: ${{ secrets.GCP_KEY_JSON }}
+        run: |
+          python - <<'EOF'
+          import os, base64
+          key_b64 = os.environ["GCP_KEY_JSON"]
+          with open("key.json", "wb") as f:
+              f.write(base64.b64decode(key_b64))
+          EOF
+      
+      - name: Setup DVC remote credentials
+        run: |
+          dvc remote modify --local gcp-bucket-1 credentialpath key.json
+      
+      - name: Pull dataset from bucket
+        run: |
+          dvc pull
+
+      - name: Reproduce pipeline
+        run: |
+          dvc repro
+    
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/sentiment-analysis
+          TAG=${GITHUB_SHA::7}
+          docker build -t $IMAGE_NAME:$TAG -t $IMAGE_NAME:latest .
+
+      - name: Push Docker image
+        run: |
+          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/sentiment-analysis
+          TAG=${GITHUB_SHA::7}
+          docker push $IMAGE_NAME:$TAG
+          docker push $IMAGE_NAME:latest
