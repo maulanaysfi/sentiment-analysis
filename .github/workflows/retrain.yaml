@@ -4,7 +4,6 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    container: ghcr.io/iterative/cml:latest
     steps:
       - uses: actions/checkout@v5
       - name: Install dependencies
